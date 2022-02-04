@@ -2,16 +2,25 @@
 
 {% block content %}
 
-<h1>Home</h1>
+<h1>Home Page</h1>
 
 <div>
+
+    <div>
+        <a href="{% url 'new-board' %}">New Post</a>
+        <hr>
+    </div>
 
     <div>
         {% for board in boards %}
             <div>
                 <h4><a href="{% url 'board' board.id %}">{{board.name}}</a></h4>
-                <span><small>@User123 from {{board.city.capitalize}}, {{board.state.upper}}</small></span>
-                <span><small>- 2 hours ago </small></span>
+                <h5>{{board.category}}</h5>
+                <span><small>@{{board.author.username.capitalize}} from {{board.city.capitalize}}, {{board.state.upper}}</small></span>
+                <span><small>- {{board.created}} </small></span>
+                <a href="{% url 'edit-board' board.id %}">Edit Post</a>
+                <a href="{% url 'remove-board' board.id %}">Delete Post</a>
+                <hr>
             </div>
         {% endfor %}
     </div>
