@@ -9,7 +9,7 @@
     <div>
         {% for board in boards %}
             <div>
-                <h4>{{board.id}} - <a href="{% url 'board' board.id %}">{{board.name}}</a></h4>
+                <h4><a href="{% url 'board' board.id %}">{{board.name}}</a></h4>
             </div>
         {% endfor %}
     </div>
