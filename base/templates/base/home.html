@@ -10,6 +10,8 @@
         {% for board in boards %}
             <div>
                 <h4><a href="{% url 'board' board.id %}">{{board.name}}</a></h4>
+                <span><small>@User123 from {{board.city.capitalize}}, {{board.state.upper}}</small></span>
+                <span><small>- 2 hours ago </small></span>
             </div>
         {% endfor %}
     </div>
