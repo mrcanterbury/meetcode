@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from .models import Board, Category
 from .forms import BoardForm
@@ -6,16 +7,18 @@ from .forms import BoardForm
 def home(request):
     query = request.GET.get('q') if request.GET.get('q') != None else ''
     
-    boards = Board.objects.filter(
+    board_list = Board.objects.filter(
         Q(name__icontains=query) |
         Q(city__icontains=query) |
         Q(category__name__icontains=query)
     )
     
+    board_count = board_list.count()
+    
     categories = Category.objects.all()[:10]
     cities = Board.objects.all()[:10]
     
-    context = {'boards': boards, 'categories': categories, 'cities': cities}
+    context = {'board_list': board_list, 'board_count': board_count, 'categories': categories, 'cities': cities}
     return render(request, 'base/home.html', context)
 
 

@@ -1,13 +1,14 @@
 {% extends 'layout.html' %}
+{% load humanize %}
 
 {% block content %}
 
-<div class="layout-container">
+<div class="main-container">
     
-    <div>
-            <div class="new-post-container">
-                <a class="new-post" href="{% url 'new-board' %}">+ New Post</a>
-            </div>
+    <div class="left-sidebar">
+        <div class="new-post-container">
+            <a class="new-post" href="{% url 'new-board' %}">+ Create Post</a>
+        </div>
 
         <div class="category-container">
             <h2>Categories</h2>
@@ -29,11 +30,15 @@
         </div>
     </div>
 
-    <div>
-        {% for board in boards %}
+    <div class="content-container">
+        <div>
+          <span><strong>Choose From:</strong> {{board_count}} Posts</span>
+          <hr>
+        </div>
+        {% for board in board_list %}
             <div>
-                <h4><a href="{% url 'board' board.id %}">{{board.name}}</a></h4>
                 <h5>{{board.category}}</h5>
+                <h4><a href="{% url 'board' board.id %}">{{board.name}}</a></h4>
                 <span><small>Posted by @ {{board.author.username.title}} from {{board.city.title}}, {{board.state.upper}}</small></span>
                 <span><small>- {{board.created}} </small></span>
                 <a href="{% url 'edit-board' board.id %}">Edit</a>
@@ -43,7 +48,7 @@
         {% endfor %}
     </div>
 
-    <div>
+    <div class="right-sidebar">
         <div class="recent-container">
             Recent Activity
             (List all boards you are a member of)
