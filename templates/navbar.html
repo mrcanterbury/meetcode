@@ -1,5 +1,21 @@
-<a href="/">
-    <h1>meet<strong>code</strong></h1>
-</a>
+<nav class="navbar-container">
 
+    <div>
+        <a href="/">
+            <h2>meet<strong>code</strong></h2>
+        </a>
+    </div>
+
+    <div class="search-container">
+        <form method="GET"action="{% url 'home' %}">
+            <input type="text" name="q" placeholder="Search...">
+        </form>
+    </div>
+
+    <div class="user-container">
+        @ Username123
+    </div>
+
+</nav>
 <hr>
+

@@ -1,10 +1,21 @@
 from django.shortcuts import render, redirect
-from .models import Board
+from django.db.models import Q
+from .models import Board, Category
 from .forms import BoardForm
 
 def home(request):
-    boards = Board.objects.all()
-    context = {'boards': boards}
+    query = request.GET.get('q') if request.GET.get('q') != None else ''
+    
+    boards = Board.objects.filter(
+        Q(name__icontains=query) |
+        Q(city__icontains=query) |
+        Q(category__name__icontains=query)
+    )
+    
+    categories = Category.objects.all()[:10]
+    cities = Board.objects.all()[:10]
+    
+    context = {'boards': boards, 'categories': categories, 'cities': cities}
     return render(request, 'base/home.html', context)
 
 

@@ -2,13 +2,31 @@
 
 {% block content %}
 
-<h1>Home Page</h1>
-
-<div>
-
+<div class="layout-container">
+    
     <div>
-        <a href="{% url 'new-board' %}">New Post</a>
-        <hr>
+            <div class="new-post-container">
+                <a class="new-post" href="{% url 'new-board' %}">+ New Post</a>
+            </div>
+
+        <div class="category-container">
+            <h2>Categories</h2>
+            <a href="{% url 'home' %}">Any</a>
+            {% for category in categories %}
+                <div>
+                    <a href="{% url 'home' %}?q={{category.name}}">{{category.name}}</a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="category-container">
+            <h2>Cities</h2>
+            {% for board in cities %}
+                <div>
+                    <a href="{% url 'home' %}?q={{board.city}}">{{board.city.title}}</a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
     <div>
@@ -16,13 +34,25 @@
             <div>
                 <h4><a href="{% url 'board' board.id %}">{{board.name}}</a></h4>
                 <h5>{{board.category}}</h5>
-                <span><small>@{{board.author.username.capitalize}} from {{board.city.capitalize}}, {{board.state.upper}}</small></span>
+                <span><small>Posted by @ {{board.author.username.title}} from {{board.city.title}}, {{board.state.upper}}</small></span>
                 <span><small>- {{board.created}} </small></span>
-                <a href="{% url 'edit-board' board.id %}">Edit Post</a>
-                <a href="{% url 'remove-board' board.id %}">Delete Post</a>
+                <a href="{% url 'edit-board' board.id %}">Edit</a>
+                <a href="{% url 'remove-board' board.id %}">Delete</a>
                 <hr>
             </div>
         {% endfor %}
+    </div>
+
+    <div>
+        <div class="recent-container">
+            Recent Activity
+            (List all boards you are a member of)
+         </div>
+         <hr>
+        <div class="suggested-container">
+            Suggested Boards
+            (List boards from your same city)
+         </div>
     </div>
 
 </div>
