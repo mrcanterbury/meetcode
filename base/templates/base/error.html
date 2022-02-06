@@ -1,8 +1,10 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div>
-    Something went wrong - perhaps you mispelled something.
-    <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+<div class="main-container">
+    <div>
+        <p>Something went wrong - perhaps you mispelled something.</p> 
+        <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+    </div>
 </div>
 {% endblock content %}

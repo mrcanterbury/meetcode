@@ -1,0 +1,6 @@
+<h2>Cities</h2>
+{% for board in cities %}
+    <div>
+        <a href="{% url 'home' %}?q={{board.city}}">{{board.city.title}}</a>
+    </div>
+{% endfor %}
