@@ -72,16 +72,13 @@ def home(request):
         Q(category__name__icontains=query)
     )
     
-    local_list = Board.objects.filter(Q(city__icontains=query) | Q(state__icontains=query))
-    
-    
     board_count = board_list.count()
-    
+    activity_comments = Message.objects.all().order_by('-updated')[:10]
     categories = Category.objects.all()[:10]
     cities = Board.objects.all()[:10]
     
     context = {'board_list': board_list, 'board_count': board_count,
-               'categories': categories, 'cities': cities, 'local_list': local_list}
+               'activity_comments': activity_comments, 'categories': categories, 'cities': cities}
     return render(request, 'base/home.html', context)
 
 

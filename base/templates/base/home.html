@@ -58,22 +58,13 @@
     <div class="right-sidebar">
         <div class="recent-container">
             <h3>Recent Activity</h3>
-            (List all boards you are a member of)
-        </div>
-         <hr>
-        <div class="suggested-container">
-            <h3>Suggested Boards</h3>
-            {% for board in local_list %}
-
-                {% if board.state == 'tx' %}
-
-                <div>
-                    <h4><a href="{% url 'board' board.id %}">{{board.name}}</a></h4>
-                    <span><small>{{board.city.title}}, {{board.state.upper}}</small></span>
-                </div>
-
-                {% endif %}
-
+            <hr>
+            {% for comment in activity_comments %}
+            <div>
+                <small>Posted by @{{comment.user}} - {{comment.created|timesince}}ago</small>
+                <p>{{comment.body}}</p>
+                <p>Comment From: <h4><a href="{% url 'board' comment.board.id %}">{{comment.board.name}}</a></h4> </p>
+            </div>
             {% endfor %}
         </div>
     </div>
