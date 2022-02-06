@@ -15,7 +15,7 @@
     <div class="user-container">
         {% if request.user.is_authenticated %}
         <span>@ {{user.username.capitalize}} | </span>
-        <span> Profile | </span>
+        <a href="{% url 'user-profile' user.id %}">Profile |</a>  
         <a href="{% url 'user-logout' %}">Log Out</a>
         {% else %}
         <a href="{% url 'user-login' %}">Login</a>
@@ -23,5 +23,4 @@
     </div>
 
 </nav>
-<hr>
 

@@ -1,15 +1,17 @@
 {% for board in board_list %}
-<div>
-    <h5>{{board.category}}</h5>
-    <h4><a href="{% url 'board' board.id %}">{{board.name}}</a></h4>
-    <span><small>Posted by <a href="{% url 'user-profile' board.author.id %}">@ {{board.author.username.title}}</a> from {{board.city.title}}, {{board.state.upper}}</small></span>
-    
-
+<div class="result-container">
+    <div class="result-content-container">
+        <span class="result-title"><a href="{% url 'board' board.id %}">{{board.name}}</a></span>
+        <span class="result-author">Posted by <a href="{% url 'user-profile' board.author.id %}">@ {{board.author.username.title}}</a> from {{board.city.title}}, {{board.state.upper}}</span>
+    </div>
+    <div class="result-sub-container">
+    <span class="result-category">{{board.category}}</span>
     {% if request.user == board.author %}
-    <a href="{% url 'edit-board' board.id %}">Edit | </a>
-    <a href="{% url 'delete-board' board.id %}">Delete</a>
+    <div class="result-modify-container">
+        <a class="modify-item" href="{% url 'edit-board' board.id %}">Edit</a>
+        <a class="modify-item" href="{% url 'delete-board' board.id %}">Delete</a>   
+    </div>  
     {% endif %}
-
-    <hr>
+    </div>
 </div>
 {% endfor %}
