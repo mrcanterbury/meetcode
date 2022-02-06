@@ -140,7 +140,7 @@ def deleteBoard(request, pk):
         board.delete()
         return redirect('home')
         
-    return render(request, 'base/delete-board.html', {'obj': board})
+    return render(request, 'base/delete_board.html', {'obj': board})
 
 @login_required(login_url='user-login')
 def deleteComment(request, pk):
@@ -154,7 +154,7 @@ def deleteComment(request, pk):
         comment.delete()
         return redirect('board', pk=parentBoard)
         
-    return render(request, 'base/delete-comment.html', {'obj': comment})
+    return render(request, 'base/delete_comment.html', {'obj': comment})
 
 def userError(request):
     return render(request, 'base/error.html')
