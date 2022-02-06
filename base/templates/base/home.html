@@ -41,8 +41,12 @@
                 <h4><a href="{% url 'board' board.id %}">{{board.name}}</a></h4>
                 <span><small>Posted by @ {{board.author.username.title}} from {{board.city.title}}, {{board.state.upper}}</small></span>
                 <span><small>- {{board.created}} </small></span>
+
+                {% if request.user == board.author %}
                 <a href="{% url 'edit-board' board.id %}">Edit</a>
                 <a href="{% url 'remove-board' board.id %}">Delete</a>
+                {% endif %}
+
                 <hr>
             </div>
         {% endfor %}

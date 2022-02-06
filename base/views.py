@@ -1,24 +1,29 @@
 from django.shortcuts import render, redirect
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
 from .models import Board, Category
 from .forms import BoardForm
 
 
 
 
-def loginRegister(request):
+def userLogin(request):
+    page = 'user-login'
+    
+    if request.user.is_authenticated:
+        return redirect('home')
     
     if request.method == 'POST':
-        username = request.POST.get('username')
+        username = request.POST.get('username').lower()
         password = request.POST.get('password')
         
         try:
             user = User.objects.get(username=username)
         except:
-            print('User does not exist.')
+            return redirect('user-error')
             
         user = authenticate(request, username=username, password=password)
         
@@ -26,14 +31,35 @@ def loginRegister(request):
             login(request, user)
             return redirect('home')
         else:
-            print('Username or password incorrect.')
+            return redirect('user-error')
         
-    context = {}
+    context = {'page': page}
     return render(request, 'base/login_register.html', context)
 
-def logoutUser(request):
+
+def userLogout(request):
     logout(request)
     return redirect('home')
+
+
+def userRegister(request):
+    page = 'user-register'
+    form = UserCreationForm()
+    
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect('home')
+        else:
+            return redirect('user-error')
+    
+    context = {'page': page, 'form': form}
+    return render(request, 'base/login_register.html', context)
+
 
 def home(request):
     query = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -59,6 +85,7 @@ def board(request, pk):
     return render(request, 'base/board.html', context)
 
 
+@login_required(login_url='user-login')
 def newBoard(request):
     form = BoardForm
     
@@ -72,9 +99,13 @@ def newBoard(request):
     return render(request, 'base/new_board.html', context)
 
 
+@login_required(login_url='user-login')
 def editBoard(request, pk):
     board = Board.objects.get(id=pk)
     form = BoardForm(instance = board)
+    
+    if request.user != board.author:
+        return redirect('error')
     
     if request.method == 'POST':
         form = BoardForm(request.POST, instance=board)
@@ -86,6 +117,7 @@ def editBoard(request, pk):
     return render(request, 'base/edit_board.html', context)
 
 
+@login_required(login_url='user-login')
 def removeBoard(request, pk):
     board = Board.objects.get(id=pk)
     
@@ -94,4 +126,7 @@ def removeBoard(request, pk):
         return redirect('home')
         
     return render(request, 'base/remove.html', {'obj': board})
+
+def userError(request):
+    return render(request, 'base/error.html')
     
