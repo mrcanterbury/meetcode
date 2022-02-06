@@ -100,6 +100,15 @@ def board(request, pk):
     return render(request, 'base/board.html', context)
 
 
+def userProfile(request, pk):
+    user = User.objects.get(id=pk)
+    board_list = user.board_set.all()
+    activity_comments = user.message_set.all()
+    categories = Category.objects.all()[:10]
+    
+    context = {'user': user, 'board_list': board_list, 'activity_comments': activity_comments, 'categories': categories}
+    return render(request, 'base/user_profile.html', context)
+
 @login_required(login_url='user-login')
 def newBoard(request):
     form = BoardForm

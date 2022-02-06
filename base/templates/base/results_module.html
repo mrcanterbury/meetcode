@@ -2,7 +2,8 @@
 <div>
     <h5>{{board.category}}</h5>
     <h4><a href="{% url 'board' board.id %}">{{board.name}}</a></h4>
-    <span><small>Posted by @ {{board.author.username.title}} from {{board.city.title}}, {{board.state.upper}}</small></span>
+    <span><small>Posted by <a href="{% url 'user-profile' board.author.id %}">@ {{board.author.username.title}}</a> from {{board.city.title}}, {{board.state.upper}}</small></span>
+    
 
     {% if request.user == board.author %}
     <a href="{% url 'edit-board' board.id %}">Edit | </a>

@@ -1,6 +1,23 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<h2>User Profile: {{user.username}}</h2>
+
+
+<div class="main-container">
+
+    <div>
+        {% include 'base/category_module.html' %}
+    </div>
+
+    <div>
+        <h2>User Profile: {{user.username}}</h2>
+        {% include 'base/results_module.html' %}
+    </div>
+
+    <div>
+        {% include 'base/activity_module.html' %}
+    </div>
+
+</div>
 
 {% endblock content %}

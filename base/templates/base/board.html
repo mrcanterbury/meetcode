@@ -45,7 +45,7 @@
     <hr>
     {% for member in members %}
     <div>
-        <p>@ {{member.username.capitalize}}</p>
+        <a href="{% url 'user-profile' member.id %}">@ {{member.username.capitalize}}</a>
     </div>
     {% endfor %}
 
