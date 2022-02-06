@@ -73,7 +73,7 @@ def home(request):
     )
     
     board_count = board_list.count()
-    activity_comments = Message.objects.all().order_by('-updated')[:10]
+    activity_comments = Message.objects.filter(Q(board__city__icontains=query))[:10]
     categories = Category.objects.all()[:10]
     cities = Board.objects.all()[:10]
     

@@ -57,12 +57,12 @@
 
     <div class="right-sidebar">
         <div class="recent-container">
-            <h3>Recent Activity</h3>
+            <h3>Activity</h3>
             <hr>
             {% for comment in activity_comments %}
             <div>
-                <small>Posted by @{{comment.user}} - {{comment.created|timesince}}ago</small>
-                <p>{{comment.body}}</p>
+                <small>Posted by @{{comment.user}} - {{comment.created|timesince}} ago</small>
+                <p>{{comment}}</p>
                 <p>Comment From: <h4><a href="{% url 'board' comment.board.id %}">{{comment.board.name}}</a></h4> </p>
             </div>
             {% endfor %}
