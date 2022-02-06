@@ -14,6 +14,7 @@ class Board(models.Model):
     state = models.CharField(max_length=2, null=True, blank=True)
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
+    members = models.ManyToManyField(User, related_name='members', blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     

@@ -32,7 +32,11 @@
 
     <div class="content-container">
         <div>
-          <span><strong>Choose From:</strong> {{board_count}} Posts</span>
+          {% if board_count > 0 %}  
+          <span><strong>Posts Available:</strong> {{board_count}}</span>
+          {% else %}
+          <span><strong>No Posts Found</span>
+          {% endif %}  
           <hr>
         </div>
         {% for board in board_list %}
@@ -40,11 +44,10 @@
                 <h5>{{board.category}}</h5>
                 <h4><a href="{% url 'board' board.id %}">{{board.name}}</a></h4>
                 <span><small>Posted by @ {{board.author.username.title}} from {{board.city.title}}, {{board.state.upper}}</small></span>
-                <span><small>- {{board.created}} </small></span>
 
                 {% if request.user == board.author %}
-                <a href="{% url 'edit-board' board.id %}">Edit</a>
-                <a href="{% url 'remove-board' board.id %}">Delete</a>
+                <a href="{% url 'edit-board' board.id %}">Edit | </a>
+                <a href="{% url 'delete-board' board.id %}">Delete</a>
                 {% endif %}
 
                 <hr>
@@ -54,14 +57,25 @@
 
     <div class="right-sidebar">
         <div class="recent-container">
-            Recent Activity
+            <h3>Recent Activity</h3>
             (List all boards you are a member of)
-         </div>
+        </div>
          <hr>
         <div class="suggested-container">
-            Suggested Boards
-            (List boards from your same city)
-         </div>
+            <h3>Suggested Boards</h3>
+            {% for board in local_list %}
+
+                {% if board.state == 'tx' %}
+
+                <div>
+                    <h4><a href="{% url 'board' board.id %}">{{board.name}}</a></h4>
+                    <span><small>{{board.city.title}}, {{board.state.upper}}</small></span>
+                </div>
+
+                {% endif %}
+
+            {% endfor %}
+        </div>
     </div>
 
 </div>

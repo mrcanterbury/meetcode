@@ -9,6 +9,7 @@ urlpatterns = [
     path("board/<str:pk>", views.board, name="board"),
     path("new-board/", views.newBoard, name="new-board"),
     path("edit-board/<str:pk>", views.editBoard, name="edit-board"),
-    path("remove-board/<str:pk>", views.removeBoard, name="remove-board"),
+    path("delete-board/<str:pk>", views.deleteBoard, name="delete-board"),
+    path("delete-comment/<str:pk>", views.deleteComment, name="delete-comment"),
     path("user-error/", views.userError, name="user-error"),
 ]

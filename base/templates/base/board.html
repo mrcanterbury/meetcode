@@ -1,11 +1,56 @@
-{% extends 'layout.html' %}
-
+{% extends 'layout.html' %} 
 
 {% block content %}
 
-<h1>{{board.name}}</h1>
-<p>
-    {{board.description}}
-</p>
+<div class="board-container">
+
+  <div class="board-content-container">
+
+    <h1>{{board.name}}</h1>
+    <small>{{board.city.title}}, {{board.state.upper}}</small>
+    <p>{{board.description}}</p>
+    <hr />
+    <div class="comment-container">
+      <h3>Comments</h3>
+
+      {% for comment in comments %}
+      <div>
+        <small>Posted by @{{comment.user}} - {{comment.created|timesince}}ago</small>
+        <p>{{comment.body}}</p>
+      </div>
+        {% if request.user == comment.user %}
+        <a href="{% url 'delete-comment' comment.id %}">Delete</a>
+        {% endif %} 
+      {% endfor %}
+    </div>
+    <hr />
+    <div>
+    {% if request.user.is_authenticated %}
+      <h4>Add to the conversation:</h4>
+      <form method="POST" action="">
+        {% csrf_token %}
+        <input type="text" name="body" placeholder="Type your message here" />
+      </form>
+
+    {% else %}
+        <p>Want to join the conversation? <a href="{% url 'user-register' %}">Sign Up!</a></p>
+    {% endif %} 
+    </div>
+
+  </div>
+
+  <div class="board-member-container">
+
+    <h2>Members</h2>
+    <hr>
+    {% for member in members %}
+    <div>
+        <p>@ {{member.username.capitalize}}</p>
+    </div>
+    {% endfor %}
+
+  </div>
+
+</div>
 
 {% endblock %}

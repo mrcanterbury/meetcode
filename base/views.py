@@ -4,8 +4,10 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .models import Board, Category
+from .models import Board, Category, Message
 from .forms import BoardForm
+
+
 
 
 
@@ -70,18 +72,34 @@ def home(request):
         Q(category__name__icontains=query)
     )
     
+    local_list = Board.objects.filter(Q(city__icontains=query) | Q(state__icontains=query))
+    
+    
     board_count = board_list.count()
     
     categories = Category.objects.all()[:10]
     cities = Board.objects.all()[:10]
     
-    context = {'board_list': board_list, 'board_count': board_count, 'categories': categories, 'cities': cities}
+    context = {'board_list': board_list, 'board_count': board_count,
+               'categories': categories, 'cities': cities, 'local_list': local_list}
     return render(request, 'base/home.html', context)
 
 
 def board(request, pk):
     board = Board.objects.get(id=pk)
-    context = {'board': board}
+    comments = board.message_set.all().order_by('-created')
+    members = board.members.all()[:20]
+    
+    if request.method == 'POST':
+        message = Message.objects.create(
+            user = request.user,
+            board = board,
+            body = request.POST.get('body')
+        )
+        board.members.add(request.user)
+        return redirect('board', pk=board.id)
+    
+    context = {'board': board, 'comments': comments, 'members': members}
     return render(request, 'base/board.html', context)
 
 
@@ -105,7 +123,7 @@ def editBoard(request, pk):
     form = BoardForm(instance = board)
     
     if request.user != board.author:
-        return redirect('error')
+        return redirect('user-error')
     
     if request.method == 'POST':
         form = BoardForm(request.POST, instance=board)
@@ -118,14 +136,28 @@ def editBoard(request, pk):
 
 
 @login_required(login_url='user-login')
-def removeBoard(request, pk):
+def deleteBoard(request, pk):
     board = Board.objects.get(id=pk)
     
     if request.method == 'POST':
         board.delete()
         return redirect('home')
         
-    return render(request, 'base/remove.html', {'obj': board})
+    return render(request, 'base/delete-board.html', {'obj': board})
+
+@login_required(login_url='user-login')
+def deleteComment(request, pk):
+    comment = Message.objects.get(id=pk)
+    parentBoard = comment.board.id
+    
+    if request.user != comment.user:
+        return redirect('user-error')
+    
+    if request.method == 'POST':
+        comment.delete()
+        return redirect('board', pk=parentBoard)
+        
+    return render(request, 'base/delete-comment.html', {'obj': comment})
 
 def userError(request):
     return render(request, 'base/error.html')
