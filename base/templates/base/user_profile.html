@@ -5,17 +5,25 @@
 
 <div class="main-container">
 
-    <div>
-        {% include 'base/category_module.html' %}
+    <div class="left-sidebar">
+        <div class="category-container">
+            {% include 'base/category_module.html' %}
+        </div>
+
+        <div class="category-container">
+            {% include 'base/cities_module.html' %}
+        </div>
     </div>
 
-    <div>
-        <h2>User Profile: {{user.username}}</h2>
+    <div class="content-container">
+        <h2>@ {{user.username}}</h2>
         {% include 'base/results_module.html' %}
     </div>
 
-    <div>
-        {% include 'base/activity_module.html' %}
+    <div class="right-sidebar">
+        <div class="activity-container">  
+            {% include 'base/activity_module.html' %}
+        </div>
     </div>
 
 </div>

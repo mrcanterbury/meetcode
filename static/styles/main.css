@@ -89,7 +89,8 @@ a {
 }
 
 .result-category {
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: 600;
     color: #222;
     background-color: #ccc;
     padding: .5rem 1rem;
